@@ -1,0 +1,6 @@
+{
+    "index": "DashboardController",
+    "login": "LoginController",
+    "logout": "LogoutController",
+    "users": "UserController"
+}

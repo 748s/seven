@@ -1,0 +1,26 @@
+{
+    "log": {
+        "requests": "request",
+        "errors": "error"
+    },
+    "database": {
+        "type": "MYSQL",
+        "dsn": {
+            "hostname": "127.0.0.1",
+            "database": "databaseName"
+        },
+        "credentials": {
+            "username": "user",
+            "password": "pass"
+        },
+        "timestampedFields": {
+            "created": false,
+            "updated": false
+        }
+    },
+    "errorHandler": {
+        "error_reporting": "-1",
+        "display_errors": true
+    },
+    "timezone": "America/New_York"
+}

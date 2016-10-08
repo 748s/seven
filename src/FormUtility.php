@@ -4,6 +4,12 @@ namespace Seven;
 
 use Exception;
 
+/**
+ * FormUtility
+ *
+ * @author Nick Wakeman <nick.wakeman@gmail.com>
+ * @since  2016-10-08
+ */
 class FormUtility
 {
     public $data = array();

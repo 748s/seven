@@ -2,6 +2,12 @@
 
 namespace Seven;
 
+/**
+ * Argument
+ *
+ * @author Nick Wakeman <nick.wakeman@gmail.com>
+ * @since  2016-10-08
+ */
 abstract class Argument
 {
     protected $argument;
