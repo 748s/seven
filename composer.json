@@ -1,0 +1,27 @@
+{
+    "name": "seven/seven",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nick Wakeman",
+            "email": "nick.wakeman@gmail.com",
+            "role": "Architect, Developer"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "http://github.com/748s/arm"
+        }
+    ],
+    "autoload": {
+        "psr-4" : {
+            "Seven\\" : "src"
+        }
+    },
+    "require": {
+        "php" : "^5.5",
+        "seven/arm": "dev-master",
+        "twig/twig": "~1.0"
+    }
+}
