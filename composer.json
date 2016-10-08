@@ -9,10 +9,7 @@
         }
     ],
     "repositories": [
-        {
-            "type": "vcs",
-            "url": "http://github.com/748s/arm"
-        }
+        {"type": "vcs", "url": "http://github.com/748s/arm.git"}
     ],
     "autoload": {
         "psr-4" : {
