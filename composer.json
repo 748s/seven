@@ -18,7 +18,7 @@
     },
     "require": {
         "php" : "^5.5",
-        "seven/arm": "dev-master",
+        "seven/arm": "~0.1",
         "twig/twig": "~1.0"
     }
 }
