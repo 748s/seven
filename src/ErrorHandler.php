@@ -2,8 +2,12 @@
 
 namespace Seven;
 
-use Seven\Logger;
-
+/**
+ * ErrorHandler
+ *
+ * @author Nick Wakeman <nick.wakeman@gmail.com>
+ * @since  2016-10-08
+ */
 class ErrorHandler
 {
     protected $config;

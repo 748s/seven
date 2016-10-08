@@ -5,6 +5,12 @@ namespace Seven;
 use InvalidArgumentException;
 use ReflectionMethod;
 
+/**
+ * Router
+ *
+ * @author Nick Wakeman <nick.wakeman@gmail.com>
+ * @since  2016-10-08
+ */
 class Router
 {
     protected $fqClassName = null;
@@ -16,7 +22,6 @@ class Router
 
     public function route()
     {
-        global $seven;
         $this->segmentRequest();
         $this->parseRequest();
 
@@ -113,7 +118,7 @@ class Router
         }
     }
 
-    private function verifyParams()
+    protected function verifyParams()
     {
         $Ref = new ReflectionMethod($this->fqClassName, $this->methodName);
         if (!(

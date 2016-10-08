@@ -5,6 +5,12 @@ namespace Seven;
 use Twig_Environment;
 use Twig_Loader_Filesystem;
 
+/**
+ * Twig
+ *
+ * @author Nick Wakeman <nick.wakeman@gmail.com>
+ * @since  2016-10-08
+ */
 class Twig
 {
     protected $config;

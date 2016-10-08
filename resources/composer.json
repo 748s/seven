@@ -1,0 +1,15 @@
+{
+    "repositories": [
+        {"type": "vcs", "url": "http://github.com/748s/seven.git"},
+        {"type": "vcs", "url": "http://github.com/748s/arm.git"}
+    ],
+    "require": {
+        "seven/seven": "~0.2"
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4" : {
+            "App\\" : "app"
+        }
+    }
+}
