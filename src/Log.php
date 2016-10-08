@@ -2,7 +2,7 @@
 
 namespace Seven;
 
-class Logger
+class Log
 {
     protected $config;
 
@@ -16,7 +16,7 @@ class Logger
     {
         global $db;
         $db->put(
-            $this->config->errorHandler->logToTable,
+            $this->config->log->errors,
             [
                 'type'          => $type,
                 'message'       => $message,
@@ -37,7 +37,7 @@ class Logger
         global $db;
         global $seven;
         $db->put(
-            $this->config->appRequests->logToTable,
+            $this->config->log->requests,
             [
                 'uri'           => (isset($_SERVER['REQUEST_URI'])) ? $_SERVER['REQUEST_URI'] : '',
                 'post'          => (count($_POST)) ? 1 : 0,
@@ -51,3 +51,36 @@ class Logger
         );
     }
 }
+/*
+CREATE TABLE error(
+    errorId INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    type TINYTEXT,
+    message TEXT,
+    file TINYTEXT,
+    line INT,
+    uri TINYTEXT,
+    post INT(1),
+    userId INT,
+    ipAddress VARCHAR(50),
+    userAgent TEXT,
+    referer TINYTEXT,
+    created DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+*/
+/*
+CREATE TABLE request(
+    requestId INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    uri TINYTEXT,
+    post INT(1),
+    userId INT,
+    ipAddress VARCHAR(50),
+    userAgent TEXT,
+    referer TINYTEXT,
+    responseTime VARCHAR(25),
+    numQueries INT,
+    created DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+*/
+

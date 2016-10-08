@@ -8,32 +8,17 @@ use Twig_Loader_Filesystem;
 class Twig
 {
     protected $config;
-    private $twig;
-    protected $filters = [];
+    protected $twig;
     protected $globals = [];
 
     public function __construct()
     {
         global $config;
         $this->config = $config;
-        $TwigLoader = new Twig_Loader_Filesystem($_SERVER['DOCUMENT_ROOT'] . $this->config->twig->templatesDirectory);
+        $TwigLoader = new Twig_Loader_Filesystem($_SERVER['DOCUMENT_ROOT'] . '/templates');
         $this->twig = new Twig_Environment($TwigLoader);
         $this->addGlobal(['alert' => $this->getAlert()]);
         $this->addGlobal(['session' => $_SESSION]);
-    }
-
-    protected function addFilter($filter)
-    {
-        $this->filters[] = $filter;
-    }
-
-    protected function loadFilters()
-    {
-        if (count($this->filters)) {
-            foreach ($this->filters as $filter) {
-                $this->twig->addFilter($filter);
-            }
-        }
     }
 
     protected function addGlobal($array)

@@ -2,22 +2,24 @@
 
 namespace Seven;
 
+use Seven\Load;
+
 class Controller
 {
     protected $db;
-    protected $permissions;
+    protected $permission;
     protected $twig;
 
     public function __construct()
     {
         global $db;
         $this->db = $db;
-        $this->loadPermissions();
+        $this->loadPermission();
     }
 
     public function isLoggedIn()
     {
-        return $this->permissions->isLoggedIn();
+        return $this->permission->isLoggedIn();
     }
 
     public function _401Action()
@@ -65,24 +67,15 @@ class Controller
 
     protected function loadTwig()
     {
-        $className = $this->getExtensionOrSeven('Twig');
+        $className = Load::extensionOrSeven('Twig');
         $this->twig = new $className();
         return $this->twig;
     }
 
-    private function loadPermissions()
+    private function loadPermission()
     {
-        $className = $this->getExtensionOrSeven('Permissions');
-        $this->permissions = new $className();
-    }
-
-    private function getExtensionOrSeven($name)
-    {
-        if(class_exists('\App\Extension\\' . $name)) {
-            return '\App\Extension\\' . $name;
-        } else {
-            return "\Seven\\$name";
-        }
+        $className = Load::extensionOrSeven('Permission');
+        $this->permission = new $className();
     }
 
     protected function renderIfTemplateExists($templateName)

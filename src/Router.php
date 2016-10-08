@@ -2,6 +2,9 @@
 
 namespace Seven;
 
+use InvalidArgumentException;
+use ReflectionMethod;
+
 class Router
 {
     protected $fqClassName = null;
@@ -112,7 +115,7 @@ class Router
 
     private function verifyParams()
     {
-        $Ref = new \ReflectionMethod($this->fqClassName, $this->methodName);
+        $Ref = new ReflectionMethod($this->fqClassName, $this->methodName);
         if (!(
             count($this->requestArguments) >= $Ref->getNumberOfRequiredParameters() &&
             count($this->requestArguments) <= $Ref->getNumberOfParameters()
@@ -125,11 +128,11 @@ class Router
                     $this->controllerArguments[$param->getName()] = $this->requestArguments[$index];
                 } else {
                     if (!$param->isOptional() || ($param->isOptional() && isset($this->requestArguments[$index]))) {
-                        $ArgumentClass = new $paramClass->name();
-                        if (!$ArgumentClass->entityExists($this->requestArguments[$index])) {
+                        try {
+                            $argument = new $paramClass->name($this->requestArguments[$index]);
+                            $this->controllerArguments[$param->getName()] = $argument;
+                        } catch (InvalidArgumentException $e) {
                             return false;
-                        } else {
-                            $this->controllerArguments[$param->getName()] = $ArgumentClass;
                         }
                     }
                 }

@@ -2,13 +2,17 @@
 
 namespace Seven;
 
-class Argument
+abstract class Argument
 {
-    protected $db;
+    protected $argument;
 
-    public function __construct()
+    public function __construct($argument)
     {
-        global $db;
-        $this->db = $db;
+        $this->argument = $argument;
+    }
+
+    public function __toString()
+    {
+        return $this->argument;
     }
 }
