@@ -2,6 +2,9 @@
 
 namespace Seven;
 
+use Exception;
+use InvalidArgumentException;
+
 /**
  * ErrorHandler
  *
@@ -27,10 +30,29 @@ class ErrorHandler
 
     public function configure()
     {
-        ini_set('display_errors', $this->config->errorHandler->display_errors);
-        ini_set('error_reporting', $this->config->errorHandler->error_reporting);
+        if (!isset($this->config->environment)) {
+            Throw new Exception("You must declare the 'environment' property in config.json");
+        } else {
+            switch (strtolower($this->config->environment)) {
+                case 'development':
+                    $errorReporting = -1;
+                    $displayErrors = true;
+                break;
+                case 'staging':
+                case 'production':
+                    $errorReporting = E_WARNING;
+                    $displayErrors = false;
+                break;
+                default:
+                    Throw new InvalidArgumentException("config->environment must be 'development', 'staging', or 'production'");
+                break;
+            }
+        }
+
+        ini_set('error_reporting', $errorReporting);
+        ini_set('display_errors', $displayErrors);
         if ($this->config->log->errors) {
-            set_error_handler([$this->log, 'logError'], $this->config->errorHandler->error_reporting);
+            set_error_handler([$this->log, 'logError'], $errorReporting);
         }
         register_shutdown_function([$this, 'handleShutdown']);
     }
