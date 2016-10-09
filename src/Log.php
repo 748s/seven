@@ -18,9 +18,6 @@ class Log
         $this->config = $config;
     }
 
-    /**
-     * @todo make errors print to screen when $config->environment == development
-     */
     public function logError($type, $message, $file, $line)
     {
         global $db;
@@ -36,6 +33,11 @@ class Log
             'userAgent'    => (isset($_SERVER['HTTP_USER_AGENT'])) ? $_SERVER['HTTP_USER_AGENT'] : null,
             'referer'       => (isset($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : null
         ]);
+
+        // if config->environment == 'development': also print errors to screen
+        if ('development' === $this->config->environment) {
+            return false;
+        }
     }
 
     public function logRequest()
