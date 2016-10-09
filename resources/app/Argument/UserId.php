@@ -12,8 +12,5 @@ use Seven\Argument\ArgumentById;
  */
 class UserID extends ArgumentById
 {
-    public function __construct($argument)
-    {
-        parent::__construct('user', $argument);
-    }
+    protected $tableName = 'user';
 }

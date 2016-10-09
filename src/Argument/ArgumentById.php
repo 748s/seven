@@ -13,11 +13,13 @@ use Seven\Argument;
  */
 class ArgumentById extends Argument
 {
-    public function __construct($tableName, $argument)
+    protected $tableName = null;
+
+    public function __construct($argument)
     {
         global $db;
         parent::__construct($argument);
-        if (!$db->existsById($tableName, $argument)) {
+        if (!$db->existsById($this->tableName, $argument)) {
             Throw new InvalidArgumentException();
         }
     }
