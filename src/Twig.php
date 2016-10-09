@@ -3,6 +3,7 @@
 namespace Seven;
 
 use Twig_Environment;
+use Twig_Extension_Debug;
 use Twig_Loader_Filesystem;
 
 /**
@@ -21,8 +22,13 @@ class Twig
     {
         global $config;
         $this->config = $config;
-        $TwigLoader = new Twig_Loader_Filesystem($_SERVER['DOCUMENT_ROOT'] . '/templates');
-        $this->twig = new Twig_Environment($TwigLoader);
+        $loader = new Twig_Loader_Filesystem($_SERVER['DOCUMENT_ROOT'] . '/templates');
+        if ('development' === $this->config->environment) {
+            $this->twig = new Twig_Environment($loader, ['debug' => true]);
+            $this->twig->addExtension(new Twig_Extension_Debug());
+        } else {
+            $this->twig = new Twig_Environment($loader, ['debug' => false]);
+        }
         $this->addGlobal(['alert' => $this->getAlert()]);
         $this->addGlobal(['session' => $_SESSION]);
     }
