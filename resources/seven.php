@@ -25,7 +25,6 @@ $config = Load::json('./config.json');
 
 // Configure Error Handling
 $errorHandler = Load::extensionOrSeven('ErrorHandler');
-$errorHandler->configure();
 
 // Configure the timezone
 date_default_timezone_set($config->timezone);
@@ -39,7 +38,6 @@ session_start();
 // Route and Execute the request
 $router = Load::extensionOrSeven('Router');
 $router->route();
-
 
 // Shutdown script
 $seven['numQueries'] = $db->getNumQueries();
