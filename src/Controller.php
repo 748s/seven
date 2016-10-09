@@ -71,15 +71,13 @@ class Controller
 
     protected function loadTwig()
     {
-        $className = Load::extensionOrSeven('Twig');
-        $this->twig = new $className();
+        $this->twig = Load::extensionOrSeven('Twig');
         return $this->twig;
     }
 
     private function loadPermission()
     {
-        $className = Load::extensionOrSeven('Permission');
-        $this->permission = new $className();
+        $this->permission = Load::extensionOrSeven('Permission');
     }
 
     protected function renderIfTemplateExists($templateName)

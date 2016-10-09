@@ -3,6 +3,7 @@
 namespace Seven;
 
 use Exception;
+use ReflectionClass;
 
 /**
  * Load - a collection of static functions to quickly, reliably, and informatively
@@ -23,12 +24,12 @@ class Load
         return $json;
     }
 
-    static function extensionOrSeven($className)
+    static function extensionOrSeven($className, $arguments = [])
     {
-        if (class_exists('\App\Extension\\' . $className)) {
-            return '\App\Extension\\' . $className;
-        } else {
-            return "\Seven\\$className";
-        }
+        $className = (class_exists('\App\Extension\\' . $className)) ?
+            "\App\Extension\\$className" : "\Seven\\$className"
+        ;
+        $reflector = new ReflectionClass($className);
+        return $reflector->newInstanceArgs($arguments);
     }
 }

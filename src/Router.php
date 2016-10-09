@@ -30,9 +30,7 @@ class Router
             $this->parseRequest();
 
             if (!class_exists($this->fqClassName) || !method_exists($this->fqClassName, $this->methodName)) {
-                $Controller = (class_exists('\App\Extension\Controller')) ?
-                    new \App\Extension\Controller() :
-                    new \Seven\Controller();
+                $Controller = Load::extensionOrSeven('Controller');
                 $Controller->_404Action();
             } else {
                 $this->Controller = new $this->fqClassName();
