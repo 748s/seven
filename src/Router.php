@@ -23,29 +23,34 @@ class Router
     public function route()
     {
         $this->segmentRequest();
-        $this->parseRequest();
-
-        if (!class_exists($this->fqClassName) || !method_exists($this->fqClassName, $this->methodName)) {
-            $Controller = (class_exists('\App\Extension\Controller')) ?
-                new \App\Extension\Controller() :
-                new \Seven\Controller();
-            $Controller->_404Action();
+        if ($this->segments[0] == 'assets') {
+            array_shift($this->segments);
+            $this->serveAssets();
         } else {
-            $this->Controller = new $this->fqClassName();
-            if (
-                property_exists($this->fqClassName, 'requireLogin') &&
-                $this->Controller->requireLogin === true && !$this->Controller->isLoggedIn()
-            ) {
-                $this->Controller->_401Action();
-            } elseif (!$this->verifyParams()) {
-                $this->Controller->_404Action();
-            } elseif (
-                method_exists($this->fqClassName, 'getPermission') &&
-                !$this->Controller->getPermission($this->methodName, $this->controllerArguments)
-            ) {
-                $this->Controller->_403Action();
+            $this->parseRequest();
+
+            if (!class_exists($this->fqClassName) || !method_exists($this->fqClassName, $this->methodName)) {
+                $Controller = (class_exists('\App\Extension\Controller')) ?
+                    new \App\Extension\Controller() :
+                    new \Seven\Controller();
+                $Controller->_404Action();
             } else {
-                call_user_func_array(array($this->Controller, $this->methodName), $this->controllerArguments);
+                $this->Controller = new $this->fqClassName();
+                if (
+                    property_exists($this->fqClassName, 'requireLogin') &&
+                    $this->Controller->requireLogin === true && !$this->Controller->isLoggedIn()
+                ) {
+                    $this->Controller->_401Action();
+                } elseif (!$this->verifyParams()) {
+                    $this->Controller->_404Action();
+                } elseif (
+                    method_exists($this->fqClassName, 'getPermission') &&
+                    !$this->Controller->getPermission($this->methodName, $this->controllerArguments)
+                ) {
+                    $this->Controller->_403Action();
+                } else {
+                    call_user_func_array(array($this->Controller, $this->methodName), $this->controllerArguments);
+                }
             }
         }
     }
@@ -66,8 +71,7 @@ class Router
     // parse request segments into ClassName, methodName, & arguments
     protected function parseRequest()
     {
-        $routes = json_decode(file_get_contents('./routes.json'), true);
-
+        $routes = Load::json('./routes.json', true);
         if (count($_POST)) {
             $this->methodName = 'postAction';
             if ($index = array_search('add', $this->segments)) {
@@ -145,4 +149,52 @@ class Router
             return true;
         }
     }
+
+    protected function serveAssets()
+    {
+        $routes = Load::json('./routes.json', true);
+        if (isset($routes['assets']) && is_array($routes['assets']) && count($routes['assets']) > 0) {
+            $assets = $routes['assets'];
+            $assetString = implode('/', $this->segments);
+            $match = false;
+            foreach ($assets as $frontEndLocation => $backEndLocation) {
+                if (
+                    !$match &&
+                    $frontEndLocation == substr($assetString, 0, strlen($frontEndLocation)) &&
+                    file_exists($backEndLocation . substr($assetString, strlen($frontEndLocation)))
+                ) {
+                    $file = $backEndLocation . substr($assetString, strlen($frontEndLocation));
+                    switch (strtolower(substr($file, strrpos($file, '.') + 1))) {
+                        case 'css':
+                        $contentType = 'text/css';
+                        break;
+                        default:
+                        $contentType = 'text/plain';
+                        break;
+                    };
+                    header('Content-Description: File Transfer');
+                    header("Content-Type: $contentType");
+                    header('Content-Disposition: attachment; filename="' . basename($file) . '"');
+                    header('Expires: 0');
+                    header('Cache-Control: must-revalidate');
+                    header('Pragma: public');
+                    header('Content-Length: ' . filesize($file));
+                    readfile($file);
+                    $match = true;
+                }
+            }
+            if (!$match) {
+                header("HTTP/1.0 404 Not Found");
+            }
+        } else {
+            header("HTTP/1.0 404 Not Found");
+        }
+    }
 }
+
+
+
+
+
+
+

@@ -19,6 +19,9 @@
     "require": {
         "php" : "^5.5",
         "seven/arm": "~0.1",
-        "twig/twig": "~1.0"
+        "twig/twig": "~1.0",
+        "components/jquery": "~1",
+        "components/font-awesome": "^4.6",
+        "components/bootstrap": "~3"
     }
 }

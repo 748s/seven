@@ -1,4 +1,9 @@
 {
+    "assets": {
+        "bootstrap": "./vendor/components/bootstrap/",
+        "font-awesome": "./vendor/components/font-awesome/",
+        "jquery": "./vendor/components/jquery/"
+    },
     "index": "DashboardController",
     "login": "LoginController",
     "logout": "LogoutController",
