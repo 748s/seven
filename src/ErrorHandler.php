@@ -26,10 +26,7 @@ class ErrorHandler
         ) {
             $this->log = new Log();
         }
-    }
 
-    public function configure()
-    {
         if (!isset($this->config->environment)) {
             Throw new Exception("You must declare the 'environment' property in config.json");
         } else {
