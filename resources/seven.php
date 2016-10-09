@@ -24,8 +24,7 @@ use Arm\Arm;
 $config = Load::json('./config.json');
 
 // Configure Error Handling
-$errorClass = Load::extensionOrSeven('ErrorHandler');
-$errorHandler = new $errorClass();
+$errorHandler = Load::extensionOrSeven('ErrorHandler');
 $errorHandler->configure();
 
 // Configure the timezone
@@ -38,9 +37,9 @@ $db = new Arm($config->database);
 session_start();
 
 // Route and Execute the request
-$routerClass = Load::extensionOrSeven('Router');
-$Router = new $routerClass();
-$Router->route();
+$router = Load::extensionOrSeven('Router');
+$router->route();
+
 
 // Shutdown script
 $seven['numQueries'] = $db->getNumQueries();

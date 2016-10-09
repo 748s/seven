@@ -5,5 +5,10 @@ RewriteEngine On
 # Prevent Directory listings
 Options -Indexes
 
+RewriteCond %{REQUEST_URI} assets/
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([^?]*) seven.php?$1 [L,QSA]
+
 RewriteCond %{REQUEST_URI} !assets/
 RewriteRule ^([^?]*) seven.php?$1 [L,QSA]
