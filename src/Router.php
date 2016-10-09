@@ -23,7 +23,7 @@ class Router
     public function route()
     {
         $this->segmentRequest();
-        if ($this->segments[0] == 'assets') {
+        if (count($this->segments) > 0 && $this->segments[0] == 'assets') {
             array_shift($this->segments);
             $this->serveAssets();
         } else {
